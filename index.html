@@ -11,13 +11,13 @@
     }
   </script>
   <style>
-    /* Glow hover */
+    /* Glow hover for cards */
     .glow:hover {
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
       transform: translateY(-4px);
     }
 
-    /* Music control button */
+    /* Music control button styles */
     #musicControl {
       position: fixed;
       bottom: 20px;
@@ -36,9 +36,47 @@
       box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
       transform: scale(1.05);
     }
+    
+    /* Sidebar styling for PS2-like menu */
+    .sidebar {
+      @apply fixed top-0 left-0 h-full w-48 bg-gray-800 text-white overflow-y-auto z-50;
+    }
+    .sidebar a {
+      @apply block px-4 py-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer transition;
+    }
+    /* Optional: highlight active link */
+    .sidebar a.active {
+      @apply bg-gray-600 font-semibold;
+    }
   </style>
 </head>
-<body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+<body class="flex">
+
+  <!-- Sidebar menu -->
+  <div class="sidebar">
+    <h2 class="p-4 text-xl font-bold border-b border-gray-700">Menu</h2>
+    <!-- Links will be generated here -->
+    <div id="sidebarLinks" class="flex flex-col"></div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="flex-1 ml-48 p-6">
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-40 border-b border-black/10 bg-white/80 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-black/60 mb-4">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="#websites" class="font-semibold tracking-tight">
+          <span class="select-none">prox<span class="opacity-40">.links.one</span></span>
+        </a>
+        <button id="themeToggle" class="px-3 py-1 border rounded-lg text-sm transition hover:bg-gray-200 dark:hover:bg-gray-800">Toggle Theme</button>
+      </div>
+    </header>
+
+    <!-- Gallery / Cards -->
+    <section id="websites" class="max-w-6xl mx-auto px-6 py-20">
+      <h2 class="text-2xl font-semibold tracking-tight mb-10">Utilities</h2>
+      <div id="grid" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3"></div>
+    </section>
+  </div>
 
   <!-- Hidden Music Player -->
   <audio id="bgMusic" src="Websites Music.mp3"></audio>
@@ -46,87 +84,71 @@
   <!-- Music Control Button -->
   <button id="musicControl">▶ Play Music</button>
 
-  <!-- Top Navigation -->
-  <header class="sticky top-0 z-40 border-b border-black/10 bg-white/80 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-black/60">
-    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-      <a href="#websites" class="font-semibold tracking-tight">
-        <span class="select-none">prox<span class="opacity-40">.links.one</span></span>
-      </a>
-      <button id="themeToggle" class="px-3 py-1 border rounded-lg text-sm transition hover:bg-gray-200 dark:hover:bg-gray-800">Toggle Theme</button>
-    </div>
-  </header>
-
-  <!-- Gallery -->
-  <section id="websites" class="mx-auto max-w-6xl px-6 py-20">
-    <h2 class="text-2xl font-semibold tracking-tight mb-10">Utilities</h2>
-    <div id="grid" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3"></div>
-  </section>
-
   <script>
-    // List of site objects: add your URLs and titles here
+    // List of sites
     const sites = [
-      {
-        url: "https://solidcoding.krewedegroove.com/",
-        title: "Solid Coding"
-      },
-      {
-        url: "https://fnrkrbvtpy.abbotsfordhallforhire.org.au/",
-        title: "Abbotsford Hall"
-      },
-      {
-        url: "https://iwpsy.anchorchain.co.za/",
-        title: "Anchor Chain"
-      },
-      {
-        url: "https://jesusisking.autoluc.cl/",
-        title: "Jesus is King"
-      },
-      {
-        url: "https://dwerk.conyser.cl/",
-        title: "Conyser"
-      },
-      {
-        url: "https://sdiybt.justanothersite.net/",
-        title: "Just Another Site"
-      },
-      {
-        url: "https://jcw87.github.io/c2-sans-fight/",
-        title: "Sans Fight"
-      },
-      {
-        url: "https://nullsto.edu.pl/",
-        title: "Nullsto"
-      },
-      {
-        url: "https://cookieclickerunblocked.github.io/",
-        title: "Cookie Clicker Unblocked"
-      }
+      { url: "https://solidcoding.krewedegroove.com/", title: "Solid Coding" },
+      { url: "https://crazy.autoluc.cl/", title: "Crazy Autoluc" },
+      { url: "https://fnrkrbvtpy.abbotsfordhallforhire.org.au/", title: "Abbotsford Hall" },
+      { url: "https://iwpsy.anchorchain.co.za/", title: "Anchor Chain" },
+      { url: "https://jesusisking.autoluc.cl/", title: "Jesus is King" },
+      { url: "https://dwerk.conyser.cl/", title: "Conyser" },
+      { url: "https://sdiybt.justanothersite.net/", title: "Just Another Site" },
+      { url: "https://jcw87.github.io/c2-sans-fight/", title: "Sans Fight" },
+      { url: "https://nullsto.edu.pl/", title: "Nullsto" },
+      { url: "https://cookieclickerunblocked.github.io/", title: "Cookie Clicker Unblocked" }
     ];
+
+    // Generate sidebar links
+    const sidebarContainer = document.getElementById("sidebarLinks");
+    sites.forEach((site, index) => {
+      const link = document.createElement("a");
+      link.href = "#"; // For navigation, could be to scroll to section or just for demo
+      link.textContent = site.title;
+      link.dataset.index = index;
+      link.className = ""; // Add classes if needed
+
+      // Add click event to scroll to section or generate cards
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        // Optional: highlight active link
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+
+        // For this demo, generate the cards based on clicked link
+        generateCards(index);
+      });
+
+      sidebarContainer.appendChild(link);
+    });
 
     const grid = document.getElementById("grid");
 
-    // Generate cards for each site
-    sites.forEach(site => {
-      const card = document.createElement("a");
-      card.href = site.url;
-      card.target = "_blank";
+    // Generate cards for selected site
+    function generateCards(startIndex) {
+      grid.innerHTML = ""; // Clear previous cards
+      // You can customize to show specific sites or all, here we'll show all for simplicity
+      sites.forEach((site, index) => {
+        const card = document.createElement("a");
+        card.href = site.url;
+        card.target = "_blank";
+        card.className = `
+          glow block rounded-2xl border border-gray-300 dark:border-gray-700 p-6 transition transform bg-white dark:bg-gray-900
+          hover:cursor-pointer hover:scale-105
+        `;
+        card.innerHTML = `
+          <div class="text-center font-medium mb-3">${site.title}</div>
+          <img src="https://image.thum.io/get/width/600/crop/800/${site.url}" 
+               alt="${site.title}" 
+               class="rounded-lg w-full object-contain bg-black" />
+          <div class="mt-4 text-center text-lg font-semibold">Click Here</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
 
-      // Add classes for styling
-      card.className = `
-        glow block rounded-2xl border border-gray-300 dark:border-gray-700 p-6 transition transform bg-white dark:bg-gray-900
-        hover:cursor-pointer hover:scale-105
-      `;
-
-      // Inner HTML with title and image
-      card.innerHTML = `
-        <div class="text-center font-medium mb-3">${site.title}</div>
-        <img src="https://image.thum.io/get/width/600/crop/800/${site.url}" 
-             alt="${site.title}" 
-             class="rounded-lg w-full object-contain bg-black" />
-        <div class="mt-4 text-center text-lg font-semibold">Click Here</div>
-      `;
-      grid.appendChild(card);
-    });
+    // Initialize by generating all cards
+    generateCards();
 
     // Theme toggle
     const html = document.documentElement;
@@ -140,7 +162,7 @@
       localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
     });
 
-    // Background Music Logic
+    // Background music controls
     const music = document.getElementById("bgMusic");
     const musicControl = document.getElementById("musicControl");
     let isPlaying = false;
