@@ -38,39 +38,38 @@
     }
   </style>
 </head>
-<body class="flex min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+<body class="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
 
   <!-- Sidebar Menu -->
-  <div class="fixed top-0 left-0 h-full w-52 bg-gray-800 text-white overflow-y-auto z-50">
-    <h2 class="p-4 text-xl font-bold border-b border-gray-700">Menu</h2>
+  <div class="fixed top-0 left-0 h-full w-60 bg-gray-900 bg-opacity-80 backdrop-blur-lg z-50 overflow-y-auto border-r border-gray-700">
+    <h2 class="p-4 text-2xl font-semibold border-b border-gray-700">Menu</h2>
     <div id="sidebarLinks" class="flex flex-col"></div>
   </div>
 
-  <!-- Main Content -->
-  <div class="flex-1 ml-52 flex flex-col">
-    <!-- Top Header -->
-    <header class="sticky top-0 z-40 border-b border-black/10 bg-white/80 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-black/60">
+  <!-- Main Content Area -->
+  <div class="flex-1 ml-60 flex flex-col">
+    <!-- Top header -->
+    <header class="sticky top-0 z-40 bg-gray-800 bg-opacity-60 backdrop-blur-lg border-b border-gray-700">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#websites" class="font-semibold tracking-tight">
-          <span class="select-none">prox<span class="opacity-40">.links.one</span></span>
+        <a href="#websites" class="text-xl font-semibold tracking-tight">
+          prox<span class="opacity-60">.links.one</span>
         </a>
-        <button id="themeToggle" class="px-3 py-1 border rounded-lg text-sm transition hover:bg-gray-200 dark:hover:bg-gray-800">Toggle Theme</button>
+        <button id="themeToggle" class="px-3 py-1 border border-gray-600 rounded-lg text-sm hover:bg-gray-700 transition">Toggle Theme</button>
       </div>
     </header>
 
-    <!-- Website Cards -->
-    <section id="websites" class="p-6 flex flex-wrap gap-6" style="min-height: calc(100vh - 80px);">
+    <!-- Content: website cards -->
+    <section id="websites" class="p-6 flex flex-wrap gap-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-[calc(100vh-80px)]">
       <!-- Cards will be generated here -->
     </section>
   </div>
 
-  <!-- Hidden Music Player -->
+  <!-- Audio and Music Control -->
   <audio id="bgMusic" src="Websites Music.mp3"></audio>
-
-  <!-- Music Control Button -->
   <button id="musicControl">▶ Play Music</button>
 
   <script>
+    // List of sites
     const sites = [
       { url: "https://solidcoding.krewedegroove.com/", title: "Solid Coding" },
       { url: "https://crazy.autoluc.cl/", title: "Crazy Autoluc" },
@@ -92,13 +91,12 @@
       link.textContent = site.title;
       link.className = "px-4 py-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer transition";
       
-      // Optional: highlight active
       link.addEventListener("click", (e) => {
         e.preventDefault();
-        // Remove active from others
+        // Remove active from all links
         document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('bg-gray-600', 'font-semibold'));
         link.classList.add('bg-gray-600', 'font-semibold');
-        generateCards(); // regenerate cards (or show specific)
+        generateCards();
       });
       
       sidebarContainer.appendChild(link);
@@ -107,12 +105,12 @@
     const section = document.querySelector("#websites");
 
     function generateCards() {
-      section.innerHTML = ""; // clear previous
+      section.innerHTML = ""; // Clear previous cards
       sites.forEach(site => {
         const card = document.createElement("a");
         card.href = site.url;
         card.target = "_blank";
-        card.className = "glow block rounded-2xl border border-gray-300 dark:border-gray-700 p-6 transition transform bg-white dark:bg-gray-900 hover:scale-105 cursor-pointer";
+        card.className = "glow block rounded-2xl border border-gray-700 p-6 transition transform bg-gray-800 hover:scale-105 cursor-pointer";
 
         card.innerHTML = `
           <div class="text-center font-medium mb-3">${site.title}</div>
@@ -132,6 +130,7 @@
     if (localStorage.theme === "dark") {
       html.classList.add("dark");
     }
+
     themeToggle.addEventListener("click", () => {
       html.classList.toggle("dark");
       localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
