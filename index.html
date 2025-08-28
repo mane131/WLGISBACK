@@ -11,13 +11,12 @@
     }
   </script>
   <style>
-    /* Glow hover for cards */
+    /* Glow hover effect for cards */
     .glow:hover {
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
       transform: translateY(-4px);
     }
-
-    /* Music control button styles */
+    /* Style for the music control button */
     #musicControl {
       position: fixed;
       bottom: 20px;
@@ -38,38 +37,30 @@
     }
   </style>
 </head>
-<body class="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen flex flex-col">
 
-  <!-- Sidebar Menu -->
-  <div class="fixed top-0 left-0 h-full w-60 bg-gray-900 bg-opacity-80 backdrop-blur-lg z-50 overflow-y-auto border-r border-gray-700">
-    <h2 class="p-4 text-2xl font-semibold border-b border-gray-700">Menu</h2>
-    <div id="sidebarLinks" class="flex flex-col"></div>
-  </div>
+  <!-- Top Header with Theme Toggle -->
+  <header class="sticky top-0 z-40 bg-gray-800 bg-opacity-60 backdrop-blur-lg border-b border-gray-700">
+    <div class="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
+      <a href="#websites" class="text-xl font-semibold tracking-tight">
+        prox<span class="opacity-60">.links.one</span>
+      </a>
+      <button id="themeToggle" class="px-3 py-1 border border-gray-600 rounded-lg text-sm hover:bg-gray-700 transition">Toggle Mode</button>
+    </div>
+  </header>
 
-  <!-- Main Content Area -->
-  <div class="flex-1 ml-60 flex flex-col">
-    <!-- Top header -->
-    <header class="sticky top-0 z-40 bg-gray-800 bg-opacity-60 backdrop-blur-lg border-b border-gray-700">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#websites" class="text-xl font-semibold tracking-tight">
-          prox<span class="opacity-60">.links.one</span>
-        </a>
-        <button id="themeToggle" class="px-3 py-1 border border-gray-600 rounded-lg text-sm hover:bg-gray-700 transition">Toggle Theme</button>
-      </div>
-    </header>
+  <!-- Main Content: Website Cards -->
+  <section id="websites" class="flex-1 p-6 flex flex-wrap gap-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-[calc(100vh-80px)]">
+    <!-- Website cards will be generated here -->
+  </section>
 
-    <!-- Content: website cards -->
-    <section id="websites" class="p-6 flex flex-wrap gap-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-[calc(100vh-80px)]">
-      <!-- Cards will be generated here -->
-    </section>
-  </div>
-
-  <!-- Audio and Music Control -->
+  <!-- Background Music -->
   <audio id="bgMusic" src="Websites Music.mp3"></audio>
+  <!-- Music Control Button -->
   <button id="musicControl">▶ Play Music</button>
 
   <script>
-    // List of sites
+    // List of websites
     const sites = [
       { url: "https://solidcoding.krewedegroove.com/", title: "Solid Coding" },
       { url: "https://crazy.autoluc.cl/", title: "Crazy Autoluc" },
@@ -83,27 +74,9 @@
       { url: "https://cookieclickerunblocked.github.io/", title: "Cookie Clicker Unblocked" }
     ];
 
-    // Generate sidebar links
-    const sidebarContainer = document.getElementById("sidebarLinks");
-    sites.forEach((site, index) => {
-      const link = document.createElement("a");
-      link.href = "#";
-      link.textContent = site.title;
-      link.className = "px-4 py-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer transition";
-      
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        // Remove active from all links
-        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('bg-gray-600', 'font-semibold'));
-        link.classList.add('bg-gray-600', 'font-semibold');
-        generateCards();
-      });
-      
-      sidebarContainer.appendChild(link);
-    });
+    const section = document.getElementById("websites");
 
-    const section = document.querySelector("#websites");
-
+    // Generate website cards
     function generateCards() {
       section.innerHTML = ""; // Clear previous cards
       sites.forEach(site => {
@@ -121,19 +94,31 @@
       });
     }
 
-    // Initialize cards
+    // Initial populate
     generateCards();
 
-    // Theme toggle
+    // Theme toggle logic
     const html = document.documentElement;
     const themeToggle = document.getElementById("themeToggle");
+    // Load saved theme
     if (localStorage.theme === "dark") {
       html.classList.add("dark");
+      themeToggle.textContent = "Switch to Light Mode";
+    } else {
+      html.classList.remove("dark");
+      themeToggle.textContent = "Switch to Dark Mode";
     }
-
+    // Toggle theme on click
     themeToggle.addEventListener("click", () => {
-      html.classList.toggle("dark");
-      localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
+      if (html.classList.contains("dark")) {
+        html.classList.remove("dark");
+        localStorage.theme = "light";
+        themeToggle.textContent = "Switch to Dark Mode";
+      } else {
+        html.classList.add("dark");
+        localStorage.theme = "dark";
+        themeToggle.textContent = "Switch to Light Mode";
+      }
     });
 
     // Music controls
@@ -142,6 +127,7 @@
     let isPlaying = false;
 
     window.addEventListener("load", () => {
+      // Autoplay attempt
       music.play().then(() => {
         isPlaying = true;
         musicBtn.textContent = "⏸ Pause Music";
@@ -150,11 +136,13 @@
       });
     });
 
+    // Loop music
     music.addEventListener("ended", () => {
       music.currentTime = 0;
       music.play();
     });
 
+    // Play/Pause toggle
     musicBtn.addEventListener("click", () => {
       if (isPlaying) {
         music.pause();
