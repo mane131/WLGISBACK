@@ -36,33 +36,20 @@
       box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
       transform: scale(1.05);
     }
-    
-    /* Sidebar styling for PS2-like menu */
-    .sidebar {
-      @apply fixed top-0 left-0 h-full w-48 bg-gray-800 text-white overflow-y-auto z-50;
-    }
-    .sidebar a {
-      @apply block px-4 py-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer transition;
-    }
-    /* Optional: highlight active link */
-    .sidebar a.active {
-      @apply bg-gray-600 font-semibold;
-    }
   </style>
 </head>
-<body class="flex">
+<body class="flex min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
 
-  <!-- Sidebar menu -->
-  <div class="sidebar">
+  <!-- Sidebar Menu -->
+  <div class="fixed top-0 left-0 h-full w-52 bg-gray-800 text-white overflow-y-auto z-50">
     <h2 class="p-4 text-xl font-bold border-b border-gray-700">Menu</h2>
-    <!-- Links will be generated here -->
     <div id="sidebarLinks" class="flex flex-col"></div>
   </div>
 
-  <!-- Main content area -->
-  <div class="flex-1 ml-48 p-6">
-    <!-- Top Navigation -->
-    <header class="sticky top-0 z-40 border-b border-black/10 bg-white/80 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-black/60 mb-4">
+  <!-- Main Content -->
+  <div class="flex-1 ml-52 flex flex-col">
+    <!-- Top Header -->
+    <header class="sticky top-0 z-40 border-b border-black/10 bg-white/80 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-black/60">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#websites" class="font-semibold tracking-tight">
           <span class="select-none">prox<span class="opacity-40">.links.one</span></span>
@@ -71,10 +58,9 @@
       </div>
     </header>
 
-    <!-- Gallery / Cards -->
-    <section id="websites" class="max-w-6xl mx-auto px-6 py-20">
-      <h2 class="text-2xl font-semibold tracking-tight mb-10">Utilities</h2>
-      <div id="grid" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3"></div>
+    <!-- Website Cards -->
+    <section id="websites" class="p-6 flex flex-wrap gap-6" style="min-height: calc(100vh - 80px);">
+      <!-- Cards will be generated here -->
     </section>
   </div>
 
@@ -85,7 +71,6 @@
   <button id="musicControl">▶ Play Music</button>
 
   <script>
-    // List of sites
     const sites = [
       { url: "https://solidcoding.krewedegroove.com/", title: "Solid Coding" },
       { url: "https://crazy.autoluc.cl/", title: "Crazy Autoluc" },
@@ -103,51 +88,42 @@
     const sidebarContainer = document.getElementById("sidebarLinks");
     sites.forEach((site, index) => {
       const link = document.createElement("a");
-      link.href = "#"; // For navigation, could be to scroll to section or just for demo
+      link.href = "#";
       link.textContent = site.title;
-      link.dataset.index = index;
-      link.className = ""; // Add classes if needed
-
-      // Add click event to scroll to section or generate cards
+      link.className = "px-4 py-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer transition";
+      
+      // Optional: highlight active
       link.addEventListener("click", (e) => {
         e.preventDefault();
-        // Optional: highlight active link
-        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-        link.classList.add('active');
-
-        // For this demo, generate the cards based on clicked link
-        generateCards(index);
+        // Remove active from others
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('bg-gray-600', 'font-semibold'));
+        link.classList.add('bg-gray-600', 'font-semibold');
+        generateCards(); // regenerate cards (or show specific)
       });
-
+      
       sidebarContainer.appendChild(link);
     });
 
-    const grid = document.getElementById("grid");
+    const section = document.querySelector("#websites");
 
-    // Generate cards for selected site
-    function generateCards(startIndex) {
-      grid.innerHTML = ""; // Clear previous cards
-      // You can customize to show specific sites or all, here we'll show all for simplicity
-      sites.forEach((site, index) => {
+    function generateCards() {
+      section.innerHTML = ""; // clear previous
+      sites.forEach(site => {
         const card = document.createElement("a");
         card.href = site.url;
         card.target = "_blank";
-        card.className = `
-          glow block rounded-2xl border border-gray-300 dark:border-gray-700 p-6 transition transform bg-white dark:bg-gray-900
-          hover:cursor-pointer hover:scale-105
-        `;
+        card.className = "glow block rounded-2xl border border-gray-300 dark:border-gray-700 p-6 transition transform bg-white dark:bg-gray-900 hover:scale-105 cursor-pointer";
+
         card.innerHTML = `
           <div class="text-center font-medium mb-3">${site.title}</div>
-          <img src="https://image.thum.io/get/width/600/crop/800/${site.url}" 
-               alt="${site.title}" 
-               class="rounded-lg w-full object-contain bg-black" />
+          <img src="https://image.thum.io/get/width/600/crop/800/${site.url}" alt="${site.title}" class="rounded-lg w-full object-contain bg-black" />
           <div class="mt-4 text-center text-lg font-semibold">Click Here</div>
         `;
-        grid.appendChild(card);
+        section.appendChild(card);
       });
     }
 
-    // Initialize by generating all cards
+    // Initialize cards
     generateCards();
 
     // Theme toggle
@@ -156,23 +132,22 @@
     if (localStorage.theme === "dark") {
       html.classList.add("dark");
     }
-
     themeToggle.addEventListener("click", () => {
       html.classList.toggle("dark");
       localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
     });
 
-    // Background music controls
+    // Music controls
     const music = document.getElementById("bgMusic");
-    const musicControl = document.getElementById("musicControl");
+    const musicBtn = document.getElementById("musicControl");
     let isPlaying = false;
 
     window.addEventListener("load", () => {
       music.play().then(() => {
         isPlaying = true;
-        musicControl.textContent = "⏸ Pause Music";
+        musicBtn.textContent = "⏸ Pause Music";
       }).catch(() => {
-        console.log("Autoplay blocked — waiting for user interaction.");
+        console.log("Autoplay blocked");
       });
     });
 
@@ -181,15 +156,15 @@
       music.play();
     });
 
-    musicControl.addEventListener("click", () => {
+    musicBtn.addEventListener("click", () => {
       if (isPlaying) {
         music.pause();
         isPlaying = false;
-        musicControl.textContent = "▶ Play Music";
+        musicBtn.textContent = "▶ Play Music";
       } else {
         music.play();
         isPlaying = true;
-        musicControl.textContent = "⏸ Pause Music";
+        musicBtn.textContent = "⏸ Pause Music";
       }
     });
   </script>
