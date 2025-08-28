@@ -36,18 +36,6 @@
       box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
       transform: scale(1.05);
     }
-
-    /* Loading screen */
-    #loading {
-      position: fixed;
-      inset: 0;
-      background: black;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
   </style>
 </head>
 <body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
@@ -57,11 +45,6 @@
 
   <!-- Music Control Button -->
   <button id="musicControl">▶ Play Music</button>
-
-  <!-- Loading Screen -->
-  <div id="loading">
-    <div class="animate-pulse text-xl font-semibold">Loading Utilities…</div>
-  </div>
 
   <!-- Top Navigation -->
   <header class="sticky top-0 z-40 border-b border-black/10 bg-white/80 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-black/60">
