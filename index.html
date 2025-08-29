@@ -63,7 +63,6 @@
     // List of websites
     const sites = [
       { url: "https://solidcoding.krewedegroove.com/", title: "Solid Coding" },
-      { url: "https://crazy.autoluc.cl/", title: "Crazy Autoluc" },
       { url: "https://fnrkrbvtpy.abbotsfordhallforhire.org.au/", title: "Abbotsford Hall" },
       { url: "https://iwpsy.anchorchain.co.za/", title: "Anchor Chain" },
       { url: "https://jesusisking.autoluc.cl/", title: "Jesus is King" },
@@ -96,30 +95,6 @@
 
     // Initial populate
     generateCards();
-
-    // Theme toggle logic
-    const html = document.documentElement;
-    const themeToggle = document.getElementById("themeToggle");
-    // Load saved theme
-    if (localStorage.theme === "dark") {
-      html.classList.add("dark");
-      themeToggle.textContent = "Switch to Light Mode";
-    } else {
-      html.classList.remove("dark");
-      themeToggle.textContent = "Switch to Dark Mode";
-    }
-    // Toggle theme on click
-    themeToggle.addEventListener("click", () => {
-      if (html.classList.contains("dark")) {
-        html.classList.remove("dark");
-        localStorage.theme = "light";
-        themeToggle.textContent = "Switch to Dark Mode";
-      } else {
-        html.classList.add("dark");
-        localStorage.theme = "dark";
-        themeToggle.textContent = "Switch to Light Mode";
-      }
-    });
 
     // Music controls
     const music = document.getElementById("bgMusic");
@@ -157,3 +132,4 @@
   </script>
 </body>
 </html>
+
