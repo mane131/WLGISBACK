@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Utilities</title>
+  <h1>kinda got lazy so some stuff unorganized</h1>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -11,12 +12,12 @@
     }
   </script>
   <style>
-    /* Glow hover effect for cards */
+    
     .glow:hover {
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
       transform: translateY(-4px);
     }
-    /* Style for the music control button */
+    
     #musicControl {
       position: fixed;
       bottom: 20px;
@@ -39,7 +40,7 @@
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen flex flex-col">
 
-  <!-- Top Header with Theme Toggle -->
+  
   <header class="sticky top-0 z-40 bg-gray-800 bg-opacity-60 backdrop-blur-lg border-b border-gray-700">
     <div class="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
       <a href="#websites" class="text-xl font-semibold tracking-tight">
@@ -48,35 +49,50 @@
     </div>
   </header>
 
-  <!-- Main Content: Website Cards -->
+  
   <section id="websites" class="flex-1 p-6 flex flex-wrap gap-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-[calc(100vh-80px)]">
-    <!-- Website cards will be generated here -->
+    
   </section>
 
-  <!-- Background Music -->
+ 
   <audio id="bgMusic" src="Websites Music.mp3"></audio>
-  <!-- Music Control Button -->
+  
   <button id="musicControl">▶ Play Music</button>
 
   <script>
-    // List of websites
+    
     const sites = [
-      { url: "https://solidcoding.krewedegroove.com/", title: "Solid Coding" },
-      { url: "https://fnrkrbvtpy.abbotsfordhallforhire.org.au/", title: "Abbotsford Hall" },
-      { url: "https://iwpsy.anchorchain.co.za/", title: "Anchor Chain" },
-      { url: "https://jesusisking.autoluc.cl/", title: "Jesus is King" },
-      { url: "https://dwerk.conyser.cl/", title: "Conyser" },
-      { url: "https://sdiybt.justanothersite.net/", title: "Just Another Site" },
+      { url: "https://solidcoding.krewedegroove.com/", title: "Shadow" },
+      { url: "https://dwerk.conyser.cl/", title: "Doge V5" },
       { url: "https://jcw87.github.io/c2-sans-fight/", title: "Sans Fight" },
-      { url: "https://nullsto.edu.pl/", title: "Nullsto" },
+      { url: "https://nullsto.edu.pl/", title: "Temp Mail" },
       { url: "https://cookieclickerunblocked.github.io/", title: "Cookie Clicker Unblocked" }
+      { url: "https://drippy-cat.github.io/snowrider3D/", title: "Snow Rider" }
+      { url: "https://d1tm91r4ytbt54.cloudfront.net/2779cbcb-a02f-48a3-9e2e-95a8d123d165/1685483461665/web/index.html", title: "Minecraft" } 
+      { url: "https://www.hoodamath.com/games/unblocked.html#gsc.tab=0", title: "Hooda Math" }
+      { url: "https://student-management-76.github.io/", title: "Student Managment" }
+      { url: "https://history-world.github.io/#google_vignette", title: "History World" }
+      { url: "https://history-world.github.io/", title: "History World" }
+      { url: "https://quiz-30.github.io/#google_vignette", title: "Quiz" }
+      { url: "https://quiz-40.github.io/#google_vignette", title: "Quiz" } 
+      { url: "https://quiz-50.github.io/#google_vignette", title: "Quiz" }
+      { url: "https://quiz-60.github.io/#google_vignette", title: "Quiz" }
+      { url: "https://quiz-70.github.io/#google_vignette", title: "Quiz" }
+      { url: "https://quiz-80.github.io/#google_vignette", title: "Quiz" }
+      { url: "https://quiz-90.github.io/#google_vignette", title: "Quiz" }
+      { url: "https://www.testsite.radiohapure.com/", title: "Doge V5" }
+      { url: "https://papapi-us.github.io/", title: "Mac VG" }
+      { url: "https://geography-lessons.github.io/#google_vignette", title: "geographylessons" }
+      { url: "https://gannonisgood.baumgardner.us/", title: "Doge V5" }
+      { url: "https://plant-selection.baumgardner.us/", title: "hammerhead *might not work*" }
+      { url: "https://classroom2x.github.io/", title: "classroom 2x" }
     ];
 
     const section = document.getElementById("websites");
 
-    // Generate website cards
+    
     function generateCards() {
-      section.innerHTML = ""; // Clear previous cards
+      section.innerHTML = ""; 
       sites.forEach(site => {
         const card = document.createElement("a");
         card.href = site.url;
@@ -92,16 +108,16 @@
       });
     }
 
-    // Initial populate
+    
     generateCards();
 
-    // Music controls
+    
     const music = document.getElementById("bgMusic");
     const musicBtn = document.getElementById("musicControl");
     let isPlaying = false;
 
     window.addEventListener("load", () => {
-      // Autoplay attempt
+      
       music.play().then(() => {
         isPlaying = true;
         musicBtn.textContent = "⏸ Pause Music";
@@ -110,13 +126,13 @@
       });
     });
 
-    // Loop music
+    
     music.addEventListener("ended", () => {
       music.currentTime = 0;
       music.play();
     });
 
-    // Play/Pause toggle
+    
     musicBtn.addEventListener("click", () => {
       if (isPlaying) {
         music.pause();
@@ -131,5 +147,6 @@
   </script>
 </body>
 </html>
+
 
 
